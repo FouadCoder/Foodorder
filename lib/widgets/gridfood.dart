@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/pages/inside_food.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 class Gridfood extends StatelessWidget {
@@ -61,9 +62,12 @@ class Gridfood extends StatelessWidget {
                                     // Image
                                     child: AspectRatio(
                                       aspectRatio: 1,
-                                      child: FadeInImage.assetNetwork(
-                                        placeholder: "assets/food.login.png",
-                                        image: "${fooditems[index]["URLimage"]}", fit: BoxFit.cover,),
+                                      child: CachedNetworkImage(
+                                        imageUrl: "${fooditems[index]["URLimage"]}",
+                                       placeholder: (context, url) => const CircularProgressIndicator(), // Placeholder widget
+                                        errorWidget: (context, url, error) => const Icon(Icons.error), // Error widget
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ), 
                                   const SizedBox(height: 20),
