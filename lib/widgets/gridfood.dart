@@ -14,13 +14,21 @@ class Gridfood extends StatelessWidget {
     return 0.6; // Adjust as needed
   }
 }
+// to count how many items should appear in the screen 
+  int calculateChildIteminScreen(double screenWidth) {
+  if (screenWidth >= 800) { // Large screens
+    return 4; // Adjust as needed
+  } else {
+    return 2; // Adjust as needed
+  }
+}
   const Gridfood({super.key, required this.fooditems});
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
+                        crossAxisCount: calculateChildIteminScreen(MediaQuery.of(context).size.width),
                         mainAxisSpacing: 25,
                         crossAxisSpacing: 10,
                         childAspectRatio:  calculateChildAspectRatio(MediaQuery.of(context).size.width), 
