@@ -1,7 +1,9 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_app/core/colors.dart';
 import 'package:food_app/cubit/cubit_cubit.dart';
 
 class Cartitem extends StatefulWidget {
@@ -17,7 +19,7 @@ class _CartitemState extends State<Cartitem> {
   Widget build(BuildContext context) {
         return ListView.builder(
           itemCount: widget.cartdate.length,
-          itemBuilder: (BuildContext context , index) {
+          itemBuilder: (context , index) {
             // To get IdFood
             final food = "${widget.cartdate[index]["idFood"]}";
              // Find the corresponding food item in foodItems
@@ -71,7 +73,12 @@ class _CartitemState extends State<Cartitem> {
                                         SizedBox(
                                           height: 70,
                                           width: 70,
-                                          child: Image.network("${widget.cartdate[index]["URLimage"]}" , fit: BoxFit.contain,),
+                                          child:  CachedNetworkImage(
+                                        imageUrl: "${widget.cartdate[index]["URLimage"]}",
+                                       placeholder: (context, url) => const CircularProgressIndicator(color: redC,), // Placeholder widget
+                                        errorWidget: (context, url, error) => const Icon(Icons.error), // Error widget
+                                        fit: BoxFit.cover,
+                                      ),
                                         ),
                                         const SizedBox(width: 10),
                                         // Main Text and Price

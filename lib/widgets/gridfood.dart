@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/core/colors.dart';
 import 'package:food_app/pages/inside_food.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -64,7 +65,7 @@ class Gridfood extends StatelessWidget {
                                       aspectRatio: 1,
                                       child: CachedNetworkImage(
                                         imageUrl: "${fooditems[index]["URLimage"]}",
-                                       placeholder: (context, url) => const CircularProgressIndicator(), // Placeholder widget
+                                       placeholder: (context, url) => const CircularProgressIndicator(color: redC,), // Placeholder widget
                                         errorWidget: (context, url, error) => const Icon(Icons.error), // Error widget
                                         fit: BoxFit.cover,
                                       ),
@@ -72,15 +73,15 @@ class Gridfood extends StatelessWidget {
                                   ), 
                                   const SizedBox(height: 20),
                                   // Main Text and description
-                                  Flexible(child: Text("${fooditems[index]["name"]}", style: const TextStyle(fontWeight: FontWeight.bold , fontSize: 15 ), overflow: TextOverflow.ellipsis,)),
+                                  Flexible(child: Text("${fooditems[index]["name"] ?? ""}", style: const TextStyle(fontWeight: FontWeight.bold , fontSize: 15 ), overflow: TextOverflow.ellipsis,)),
                                   const SizedBox(height: 10),
-                                  Text("${fooditems[index]["description"]}" , style: const TextStyle(fontSize: 13), overflow: TextOverflow.ellipsis,),
+                                  Text("${fooditems[index]["description"] ?? ""}" , style: const TextStyle(fontSize: 13), overflow: TextOverflow.ellipsis,),
                                   const SizedBox(height: 10,),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       // Rata Text
-                                      Text("⭐ ${fooditems[index]["rating"]}" , style: const TextStyle(fontWeight: FontWeight.bold),),
+                                      Text("⭐ ${fooditems[index]["rating"] ?? ""}" , style: const TextStyle(fontWeight: FontWeight.bold),),
                                        // for Icon Food
                                       SizedBox(
                                         height: 20,

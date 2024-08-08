@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +51,12 @@ class _InsideFoodState extends State<InsideFood> with SingleTickerProviderStateM
                 // For Image 
                 AspectRatio(
                   aspectRatio: 1,
-                  child: Image.network("${widget.foodItems[widget.indexfood]["URLimage"]}" , fit: BoxFit.cover,),),
+                  child: CachedNetworkImage(
+                                        imageUrl: "${widget.foodItems[widget.indexfood]["URLimage"]}",
+                                       placeholder: (context, url) => const CircularProgressIndicator(color: redC,), // Placeholder widget
+                                        errorWidget: (context, url, error) => const Icon(Icons.error), // Error widget
+                                        fit: BoxFit.cover,
+                                      ),),
                   const SizedBox(height: 20,),
                   // Main Text
                   Text( "${widget.foodItems[widget.indexfood]["name"]}" , style: const TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),),

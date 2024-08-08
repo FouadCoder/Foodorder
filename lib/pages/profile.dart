@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_app/core/colors.dart';
@@ -62,7 +63,12 @@ class _ProfilPageState extends State<ProfilPage> {
                   ),
                   child: ClipOval(child: userdate.isNotEmpty ?
                    userdate[0]["UrlImage"] != null ? // To check if it's not null
-                    Image.network("${userdate[0]["UrlImage"]}" , fit: BoxFit.cover,) :
+                  CachedNetworkImage(
+                                        imageUrl: "${userdate[0]["UrlImage"]}",
+                                       placeholder: (context, url) => const CircularProgressIndicator(color: redC,), // Placeholder widget
+                                        errorWidget: (context, url, error) => const Icon(Icons.error), // Error widget
+                                        fit: BoxFit.cover,
+                                      ) :
                     Image.asset("assets/user1.png" , fit: BoxFit.cover) :
                     Image.asset("assets/user1.png" , fit: BoxFit.cover)
                     )

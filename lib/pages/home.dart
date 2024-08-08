@@ -15,7 +15,7 @@ class Homepage extends StatefulWidget{
 
 class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin {
   // Categries List
-  final List<String> categries = [ "All" , "Combos" , "salad" , "drinks"];
+  final List<String> categries = [ "All" , "Pizza" , "sandwiches" ,"salad" , "Sweet Delights" , ];
   String selectedCategory = "All";
   // To make GetDateFooditem works
   @override
