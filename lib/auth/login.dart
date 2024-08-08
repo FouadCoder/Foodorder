@@ -35,8 +35,6 @@ Future signInWithGoogle() async {
 
   // Once signed in, return the UserCredential
     await FirebaseAuth.instance.signInWithCredential(credential);
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pushReplacementNamed("MainPage");
 }
   final TextEditingController emailcontroller = TextEditingController();
 
@@ -114,7 +112,7 @@ Future signInWithGoogle() async {
                     UserCredential? user = await AuthService().signInWithGoogle();
                     if(user != null){
                       // ignore: use_build_context_synchronously
-                      Navigator.of(context).pushReplacementNamed("MainPage");
+                      Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route)=> false);
                     }
                     else{
                       // ignore: use_build_context_synchronously

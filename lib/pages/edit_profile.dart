@@ -76,7 +76,7 @@ class _EditProfileState extends State<EditProfile> {
     barrierColor: Colors.grey.withOpacity(0.7), // to make the background fog
       builder: (BuildContext context){
         return ShowdialogSuccess(message: message ,mainText: "Success ! ",buttomText: "Go Back",stateImage: "assets/true.png" ,onPressed: () {
-          Navigator.of(context).pushReplacementNamed("MainPage");
+          Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route)=> false);
         },);
       });
   }

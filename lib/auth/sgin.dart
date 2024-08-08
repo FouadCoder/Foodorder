@@ -94,7 +94,7 @@ class _SignUpState extends State<SignUp> {
                     UserCredential? user = await AuthService().signInWithGoogle();
                     if(user != null){
                       // ignore: use_build_context_synchronously
-                      Navigator.of(context).pushReplacementNamed("MainPage");
+                      Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route)=> false);
                     }
                     else{
                       // ignore: use_build_context_synchronously

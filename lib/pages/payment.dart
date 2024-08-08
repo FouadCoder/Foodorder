@@ -39,7 +39,7 @@ class _PaymentPageState extends State<PaymentPage> {
               onPressed: () {
                 // Take him to Main Page
 
-                Navigator.of(context).pushReplacementNamed("MainPage");
+                Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route)=> false);
               });
         });
   }
