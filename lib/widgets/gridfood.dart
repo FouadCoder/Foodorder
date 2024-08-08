@@ -7,13 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class Gridfood extends StatelessWidget {
   final  List<QueryDocumentSnapshot> fooditems; // To get the date from Fooditems in Home Page
-  double calculateChildAspectRatio(double screenWidth) {
-  if (screenWidth >= 800) { // Large screens
-    return 0.7; // Adjust as needed
-  } else {
-    return 0.6; // Adjust as needed
-  }
-}
+
 // to count how many items should appear in the screen 
   int calculateChildIteminScreen(double screenWidth) {
   if (screenWidth >= 800) { // Large screens
@@ -31,7 +25,7 @@ class Gridfood extends StatelessWidget {
                         crossAxisCount: calculateChildIteminScreen(MediaQuery.of(context).size.width),
                         mainAxisSpacing: 25,
                         crossAxisSpacing: 10,
-                        childAspectRatio:  calculateChildAspectRatio(MediaQuery.of(context).size.width), 
+                        childAspectRatio: 0.6, 
                       ),
                       itemCount: fooditems.length,
                       itemBuilder: (context , index){
