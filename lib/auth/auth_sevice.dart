@@ -62,7 +62,13 @@ class _CheckAcuuontAuthState extends State<CheckAcuuontAuth> {
                 ));
               }
               if(snapshot.hasData){
-                return const MainPage();
+                User? user = snapshot.data;
+                if(user != null && user.emailVerified){
+                  return const MainPage();
+                } else {
+                  return const Login();
+                }
+                
               } else{
                 return const Login();
               }

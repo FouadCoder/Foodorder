@@ -1,5 +1,6 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_app/core/colors.dart';
@@ -91,17 +92,21 @@ class _ProfilPageState extends State<ProfilPage> {
                   }
                   return const SizedBox(height: 100,);
                   }),
-              // Logout
+              // EDit profile
               const SizedBox(height: 20),
-              ClassButton(textbutton: "Logout", imageicon: "assets/logout.png", color: redC,onPressed: (){
+                            ClassButton(textbutton: "Edit Profile", imageicon: "assets/edit.png",color: brownColor, onPressed: (){
+                Navigator.of(context).pushNamed("EditProfile");
+              }),
+
+
+              // Logout 
+              ClassButton(textbutton: "Logout", imageicon: "assets/logout.png", color: redC,onPressed: () async {
                 GoogleSignIn googleSignIn = GoogleSignIn();
                 googleSignIn.disconnect();
+                await FirebaseAuth.instance.signOut();
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pushReplacementNamed("Login");
               }),
-              // Edit Profile
-              ClassButton(textbutton: "Edit Profile", imageicon: "assets/edit.png",color: brownColor, onPressed: (){
-                Navigator.of(context).pushNamed("EditProfile");
-              })
             ],
           ),
         ),

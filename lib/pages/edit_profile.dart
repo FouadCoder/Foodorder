@@ -21,7 +21,6 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-    final GlobalKey<FormState> fromkey = GlobalKey<FormState>();
     final TextEditingController namecontroller = TextEditingController();
     final TextEditingController deliveryaddresscontroller = TextEditingController();
     final TextEditingController dietarycontroller = TextEditingController();
@@ -140,35 +139,31 @@ class _EditProfileState extends State<EditProfile> {
                   fit: BoxFit.contain,
                 ),
               );
-            } 
-            return SizedBox(
+            }  else {
+                return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.95,
-                child: Stack(
+                // Stack
+                child: ListView(
                   children: [
-                    Container(color: redC,),
-                    // white color
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(22),
-                            topRight: Radius.circular(22)
-                          )
+                    Stack(
+                      children: [
+                        Container(color: redC,),
+                        // white color
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(22),
+                              topRight: Radius.circular(22)
+                            )
+                          ),
+                          height: MediaQuery.of(context).size.height * 0.75,
                         ),
-                        height: MediaQuery.of(context).size.height * 0.75,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.05, // 5% Of With
-                    vertical: MediaQuery.of(context).size.height * 0.10, // 5% Of height
-                    ),
-                      child: Form(
-                        key: fromkey,
-                        // To make the screen good for every size 
-                        child: SingleChildScrollView(
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.05, // 5% Of With
+                        vertical: MediaQuery.of(context).size.height * 0.10, // 5% Of height
+                        ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -197,36 +192,19 @@ class _EditProfileState extends State<EditProfile> {
                               const SizedBox(height: 30),
                               // Name
                             const Text("Name" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 16),),
-                          TextboxAuth(textfield: "", controller: namecontroller , color: Colors.blueGrey, validator: (val){
-                            if(val == null || val.isEmpty){
-                              return "Please enter your name";
-                            } else if (val.length < 5){
-                              return "Please enter more than 5 letters";
-                            }
-                            return null;
-                          },),
+                          TextboxAuth(textfield: "", controller: namecontroller , maxLength: 30 ,color: Colors.blueGrey,),
                           // Dietary Preferences
                           const Text("Dietary Preferences" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 16)),
-                          TextboxAuth(textfield: "", controller: dietarycontroller, color: Colors.blueGrey, validator: (val){
-                            if(val == null || val.isEmpty){
-                              return "Please enter your Dietary Preferences";
-                            } else if (val.length < 5){
-                              return "Please enter more than 5 letters";
-                            }
-                            return null;
-                          },),
+                          TextboxAuth(textfield: "", controller: dietarycontroller,maxLength: 100 ,color: Colors.blueGrey,),
                           //Delivery address
                             const Text("Delivery address",  style: TextStyle(fontWeight: FontWeight.bold , fontSize: 16)),
-                            TextboxAuth(textfield: "", controller: deliveryaddresscontroller , color:Colors.blueGrey,validator: (val){
-                              if(val == null || val.isEmpty){
-                                return "Please enter your address";
-                              } else if (val.length < 20){
-                              return "Please enter more than 20 letters";
-                            }
-                              return null;
-                            },),
+                            TextboxAuth(textfield: "", controller: deliveryaddresscontroller ,maxLength: 200 ,color:Colors.blueGrey,),
                             ClassButton(textbutton: "Save", imageicon: "assets/food.login.png",color: redC ,onPressed: (){
-                              if(fromkey.currentState!.validate()){
+                              // check that not empty 
+                              if(namecontroller.text.isNotEmpty && dietarycontroller.text.isNotEmpty && deliveryaddresscontroller.text.isNotEmpty){
+                                // check the length
+                                if(namecontroller.text.length > 7){
+                                  if(deliveryaddresscontroller.text.length > 30){
                                 String name = namecontroller.text;
                                 String address = deliveryaddresscontroller.text;
                                 String dietary = dietarycontroller.text;
@@ -234,14 +212,29 @@ class _EditProfileState extends State<EditProfile> {
                                 // Very Imprtant , that make cubit work
                                 context.read<ProfileCubit>().newdatProfile(name, address, dietary , photo);
                                 
+                                  } 
+                                  // if address was less 30 
+                                  else {
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Address must be at least 30 letters" , style: TextStyle(color: Colors.white),) , backgroundColor: redC,));
+                                  }
+                                }
+                                // if the name was less than 10 
+                                  else {
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Name must be at least 7 letters" , style: TextStyle(color: Colors.white),) , backgroundColor: redC,));
+                                }
+                              } 
+                              // Empty
+                              else {
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Can't be empty" , style: TextStyle(color: Colors.white),) , backgroundColor: redC,));
                               }
                             })
-                          ],),
-                        ),
-                      )),
+                          ],)),
+                      ],
+                    ),
                   ],
                 ),
-              ); // Return your actual content here if there's no loading state
+              ); 
+            }
           },
         ),
           ),

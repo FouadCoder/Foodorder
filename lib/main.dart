@@ -11,6 +11,7 @@ import 'package:food_app/pages/edit_profile.dart';
 import 'package:food_app/pages/main_page.dart';
 import 'package:food_app/pages/payment.dart';
 import 'package:food_app/pages/profile.dart';
+import 'package:food_app/pages/verify_email.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
           "Payment":(context)=>const PaymentPage(),
           "EditProfile":(context)=>const EditProfile(),
           "Profile":(context)=>const ProfilPage(),
-          "CartPage": (context)=> const CartPage()
+          "CartPage": (context)=> const CartPage(),
+          "Verify" : (context)=> const VerifyEmail()
         },
       ),
     );

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_app/core/colors.dart';
@@ -39,7 +40,8 @@ class _PaymentPageState extends State<PaymentPage> {
               onPressed: () {
                 // Take him to Main Page
 
-                Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route)=> false);
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil("MainPage", (route) => false);
               });
         });
   }
@@ -121,6 +123,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 TextboxAuth(
                     textfield: "Note for Delivery",
                     controller: noteAddress,
+                    maxLength: 70,
                     color: Colors.white),
                 const SizedBox(height: 30),
 
@@ -205,11 +208,13 @@ class _PaymentPageState extends State<PaymentPage> {
                     final totalprice = state.totalPrice;
                     double deliveryprice = 20;
                     double grandTotal = totalprice + deliveryprice;
+                    String totalPriceString = totalprice.toStringAsFixed(2);
                     String grandTotalString = grandTotal.toStringAsFixed(2);
                     return Column(
                       children: [
                         TwotextOneline(
-                            leftText: "Total: ", rightText: "\$$totalprice"),
+                            leftText: "Total: ",
+                            rightText: "\$$totalPriceString"),
                         // For the Price of delivery
                         const SizedBox(height: 25),
                         TwotextOneline(
@@ -237,55 +242,67 @@ class _PaymentPageState extends State<PaymentPage> {
                 SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: BlocListener<OrderFoodCubit, OrderFoodState>(
-                      listener: (context, state) {
-                        if (state is OrderFoodLoaded) {
-                          // if order has finish successfullu
-                          showdialogSuccessOrder(
-                            context,
-                            "Your order has been placed successfully. Thank you for choosing our service ❤️",
-                          );
-                        } else if (state is OrderFoodError) {
-                          // if there any error in order
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            content: Text(
-                                "We're sorry, but we're unable to process your order at this time. Please try again later."),
-                            backgroundColor: redC,
-                          ));
+                        listener: (context, state) {
+                      if (state is OrderFoodLoaded) {
+                        // if order has finish successfullu
+                        showdialogSuccessOrder(
+                          context,
+                          "Your order has been placed successfully. Thank you for choosing our service ❤️",
+                        );
+                      } else if (state is OrderFoodError) {
+                        // if there any error in order
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                              "We're sorry, but we're unable to process your order at this time. Please try again later."),
+                          backgroundColor: redC,
+                        ));
+                      }
+                    } // Child Listener
+                        , child: BlocBuilder<OrderFoodCubit, OrderFoodState>(
+                      builder: (context, stateBuild) {
+                        if(stateBuild is OrderFoodLoading){
+                          return Center(
+                          child: Lottie.asset("assets/loading5.json" ,
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.contain, 
+                          )
+                        );
+                        } else {
+                          return  NormalButton(
+                            textbutton: "ORDER NOW",
+                            backgroundColor: brownColor,
+                            onPressed: () {
+                              if (paymentselected == true) {
+                                // to see if he choose payment or not
+                                final address = dateProfile[0]["Address"];
+                                final name = dateProfile[0]["name"];
+                                final email = dateProfile[0]["email"];
+                                final paymentWay = payment;
+                                // For the note
+                                String note;
+                                if (noteAddress.text.isNotEmpty) {
+                                  note = noteAddress.text;
+                                } else {
+                                  note = "";
+                                }
+                                context.read<OrderFoodCubit>().sendTheOrder(
+                                    name, email, address, note, paymentWay!);
+                              }
+                              // else if paymentselectd == false
+                              else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text(
+                                      "Please choose a payment method such as cash or Credit card."),
+                                  backgroundColor: redC,
+                                ));
+                              }
+                            });
                         }
-                      } // Child Listener
-                      ,
-                      child: NormalButton(
-                              textbutton: "ORDER NOW",
-                              backgroundColor: brownColor,
-                              onPressed: () {
-                                if (paymentselected == true) {
-                                  // to see if he choose payment or not
-                                  final address = dateProfile[0]["Address"];
-                                  final name = dateProfile[0]["name"];
-                                  final email = dateProfile[0]["email"];
-                                  final paymentWay = payment;
-                                  // For the note
-                                  String note;
-                                  if (noteAddress.text.isNotEmpty) {
-                                    note = noteAddress.text;
-                                  } else {
-                                    note = "";
-                                  }
-                                  context.read<OrderFoodCubit>().sendTheOrder(
-                                      name, email, address, note, paymentWay!);
-                                }
-                                // else if paymentselectd == false
-                                else {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text(
-                                        "Please choose a payment method such as cash or Credit card."),
-                                    backgroundColor: redC,
-                                  ));
-                                }
-                              })
-                    ))
+                      },
+                    )))
               ],
             ),
           ),

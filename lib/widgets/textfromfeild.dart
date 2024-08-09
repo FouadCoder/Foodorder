@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 class TextboxAuth extends StatelessWidget{
   final String textfield;
   final Color color;
+  final int maxLength;
   final TextEditingController controller;
   final String? Function(String?)? validator;
 
-  const TextboxAuth({super.key, required this.textfield, required this.controller, this.validator, required this.color});
+  const TextboxAuth({super.key, required this.textfield, required this.controller, this.validator, required this.color, required this.maxLength});
   @override
   Widget build(BuildContext context) {
   return Container(
@@ -21,7 +22,7 @@ class TextboxAuth extends StatelessWidget{
               borderRadius: BorderRadius.circular(10)
             ),
             child: TextFormField(
-              maxLength: 50,
+              maxLength: maxLength,
               controller: controller,
               validator: validator,
               decoration: InputDecoration(

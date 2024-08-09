@@ -111,7 +111,7 @@ class AddItemCartCubit extends Cubit<AddItemCartState> {
 
 
     try{
-      AddItemCartLoading();
+      emit(AddItemCartLoading());
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("Cart")
       .where("userId" , isEqualTo: userId)
       .where("idFood" , isEqualTo: idFood).get();
@@ -243,6 +243,7 @@ class OrderFoodCubit extends Cubit<OrderFoodState> {
     List<Map<String, dynamic>> itemsList = []; // to add evert item in th list and send the final List to Orders
     double grandTotal = 0;
     try{
+      emit(OrderFoodLoading());
       QuerySnapshot cartquerySnapshot = await FirebaseFirestore.instance.collection("Cart")
       .where("userId" , isEqualTo:  userId).get();
       // if the cart is Empty , the Code will stop here 
