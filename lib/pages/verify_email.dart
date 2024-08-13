@@ -23,15 +23,12 @@ class _VerifyEmailState extends State<VerifyEmail> {
   void initState(){
   super.initState();
   getLastrequest();
-  if(_requstConut == 0){
-    FirebaseAuth.instance.currentUser!.sendEmailVerification(); // send verify 
-  } 
 }
 
 void successVerifyGoLogin(BuildContext context){
   showDialog(context: context, builder: (BuildContext context){
     return ShowdialogSuccess(message: "Your email has been successfully verified! You're all set to log in and start using your account. Welcome aboard!",
-      onPressed: (){Navigator.of(context).pushNamedAndRemoveUntil("Login", (route)=> false);}, stateImage: "assets/true.png", mainText: "Success!", buttomText: "Log In Now");
+      onPressed: (){Navigator.of(context).pushNamedAndRemoveUntil("Login", (route)=> false);}, stateImage: "assets/true.png", mainText: "Success!", buttomText: "Sign In Now");
   });
 }
 
@@ -52,7 +49,9 @@ void successVerifyGoLogin(BuildContext context){
       _lastrequest = lastrequest;
       _requstConut = requstConut;
     });
-
+if(requstConut == 0){
+  await FirebaseAuth.instance.currentUser!.sendEmailVerification(); // send verify 
+}
     startTimer();
   }
 
@@ -105,13 +104,16 @@ void successVerifyGoLogin(BuildContext context){
         conter = rmingTime;
       });
     _timer = Timer.periodic(const Duration(seconds: 1), (timer){
-      setState(() {
+      if(mounted){
+        setState(() {
         if(conter <= 0){
           _timer!.cancel();
         } else {
           conter--;
         }
       });
+      }
+      
     });
   }
 

@@ -75,7 +75,7 @@ class _SignUpState extends State<SignUp> {
                   // Button Login
                   loadingLogin ?
                   Center(child: Lottie.asset("assets/loading5.json" ,height: 100, width: 100, fit: BoxFit.contain, )) :
-                  ClassButton(textbutton: "Sign up" , imageicon: "assets/food.login.png" ,color: redC,onPressed: () async{
+                  ClassButton(textbutton: "Sign Up" , imageicon: "assets/food.login.png" ,color: redC,onPressed: () async{
                     if(emailcontroller.text.isNotEmpty && passwordcontroller.text.isNotEmpty && confirmcontroller.text.isNotEmpty){
                       if(passwordcontroller.text == confirmcontroller.text){
                         if(emailcontroller.text.endsWith("@gmail.com")){
@@ -133,7 +133,7 @@ class _SignUpState extends State<SignUp> {
                   // Login Google 
                   loadingGoogle ? 
                   Center(child: Lottie.asset("assets/loading5.json" ,height: 100, width: 100, fit: BoxFit.contain, )) :
-                  ClassButton(textbutton: "Sign up with Google" , imageicon: "assets/google.png" ,color: brownColor,onPressed: ()async {
+                  ClassButton(textbutton: "Sign in with Google" , imageicon: "assets/google.png" ,color: brownColor,onPressed: ()async {
                                     // if the login passed , this will work to take him Main page
                     setState(() {loadingGoogle = true;});
                     UserCredential? user = await AuthService().signInWithGoogle();
@@ -157,7 +157,7 @@ class _SignUpState extends State<SignUp> {
                       const Text("Have an account? "), 
                       GestureDetector(onTap: (){
                         Navigator.pushReplacementNamed(context, "Login");
-                      },child: const Text("Login", style: TextStyle(color: redbutton),),)
+                      },child: const Text("Sign In", style: TextStyle(color: redbutton),),)
                         
                     ],
                   )

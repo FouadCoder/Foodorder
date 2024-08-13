@@ -232,7 +232,7 @@ DateTime? _lastrequest;
                 // Button Login
                 loadingLogin ?
                 Center(child: Lottie.asset("assets/loading5.json" ,height: 100, width: 100, fit: BoxFit.contain, )) :
-                ClassButton(textbutton: "Login" , imageicon: "assets/food.login.png",color: redC,onPressed: () async {
+                ClassButton(textbutton: "Sign In" , imageicon: "assets/food.login.png",color: redC,onPressed: () async {
                   if(emailcontroller.text.isNotEmpty && passwordcontroller.text.isNotEmpty){
                     if(emailcontroller.text.endsWith("@gmail.com")){
                       // Login 
@@ -291,7 +291,7 @@ DateTime? _lastrequest;
                 // Login Google 
                 loadingGoogle ? 
                 Center(child: Lottie.asset("assets/loading5.json" ,height: 100, width: 100, fit: BoxFit.contain, )) :
-                ClassButton(textbutton: "Login with Google" , imageicon: "assets/google.png",color: brownColor,onPressed: () async{
+                ClassButton(textbutton: "Log In with Google" , imageicon: "assets/google.png",color: brownColor,onPressed: () async{
                   // if the login passed , this will work to take him Main page
                   setState(() {loadingGoogle = true;});
                   UserCredential? user = await AuthService().signInWithGoogle();
@@ -318,7 +318,7 @@ DateTime? _lastrequest;
                     const Text("Don't have an account? "), 
                     GestureDetector(onTap: (){
                       Navigator.pushReplacementNamed(context, "Sign");
-                    },child: const Text("Sign in", style: TextStyle(color: redbutton),),)
+                    },child: const Text("Sign Up", style: TextStyle(color: redbutton),),)
                       
                   ],
                 )
