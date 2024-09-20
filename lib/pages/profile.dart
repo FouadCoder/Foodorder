@@ -104,8 +104,10 @@ class _ProfilPageState extends State<ProfilPage> {
                 GoogleSignIn googleSignIn = GoogleSignIn();
                 googleSignIn.disconnect();
                 await FirebaseAuth.instance.signOut();
-                // ignore: use_build_context_synchronously
-                Navigator.of(context).pushReplacementNamed("Login");
+                if(context.mounted){
+                  Navigator.of(context).pushReplacementNamed("Login");
+                }
+                
               }),
             ],
           ),

@@ -89,11 +89,13 @@ class _CartPageState extends State<CartPage> {
                                 QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("Users").where("id" , isEqualTo: userId).get();
                                 if(querySnapshot.docs.isNotEmpty){
                                   // Go to Payment page if he has date in Profile 
-                                    // ignore: use_build_context_synchronously
+                                  if(context.mounted){
                                     Navigator.of(context).pushNamed("Payment");
+                                  } 
                                 } else {
-                                  // ignore: use_build_context_synchronously
-                                  showdoilgtoGoProfile("Please add your profile date before proceeding to checkout.", context);
+                                  if(context.mounted){
+                                    showdoilgtoGoProfile("Please add your profile date before proceeding to checkout.", context);
+                                  }
                                 }
                                 
                               }

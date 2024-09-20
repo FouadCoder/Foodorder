@@ -88,22 +88,20 @@ class _SignUpState extends State<SignUp> {
                                 password:passwordcontroller.text.trim());
                                 setState(() {loadingLogin = false;});
                                 // here what to do after success create account // Verify email first 
-                                // ignore: use_build_context_synchronously
-                                Navigator.of(context).pushNamed("Verify");
+                                if(context.mounted){Navigator.of(context).pushNamed("Verify");}
                             }
                               on FirebaseAuthException catch(e){
                                 // Stop loading 
                                 setState(() {loadingLogin = false;});
                                 // if password was weak
                                 if(e.code == 'weak-password'){
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Password is weak. Try adding numbers and symbols." , style: TextStyle(color: Colors.white),) , backgroundColor: redC,));
+                                  if(context.mounted){ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Password is weak. Try adding numbers and symbols." , style: TextStyle(color: Colors.white),) , backgroundColor: redC,));}
                                 } else if(e.code == 'email-already-in-use'){
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("This email is already registered. Please log in." , style: TextStyle(color: Colors.white),) , backgroundColor: redC,));
+                                  if(context.mounted)ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("This email is already registered. Please log in." , style: TextStyle(color: Colors.white),) , backgroundColor: redC,));{}
+                                  
                                 } else{
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Something went wrong. Please try again in a bit." , style: TextStyle(color: Colors.white),) , backgroundColor: redC,));
+                                  if(context.mounted){ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Something went wrong. Please try again in a bit." , style: TextStyle(color: Colors.white),) , backgroundColor: redC,));}
+                                  
                                 }
                               }
                           }
@@ -139,14 +137,12 @@ class _SignUpState extends State<SignUp> {
                     UserCredential? user = await AuthService().signInWithGoogle();
                     if(user != null){
                       setState(() {loadingGoogle = false;});
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route)=> false);
+                      if(context.mounted){Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route)=> false);}
                     }
                     else{
                       setState(() {loadingGoogle = false;});
-                      // ignore: use_build_context_synchronously
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: 
-                      Text("Unable to Login with Google, Please try later.")));
+                      if(context.mounted){ ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: 
+                      Text("Unable to Login with Google, Please try later.")));}
                     }
                   },),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),

@@ -62,8 +62,8 @@ class _HomepageState extends State<Homepage> with SingleTickerProviderStateMixin
                     )],
                         color: iselected ? redForText : Colors.white,
                         borderRadius: BorderRadius.circular(10)),
-                        // ignore: unnecessary_string_interpolations
-                        child: Text( "${categries[index]}", style: TextStyle(fontSize: 16 , fontWeight: iselected? FontWeight.bold: FontWeight.normal),), //
+                        
+                        child: Text( categries[index], style: TextStyle(fontSize: 16 , fontWeight: iselected? FontWeight.bold: FontWeight.normal),), //
                     ),                            
                   );
                 }),

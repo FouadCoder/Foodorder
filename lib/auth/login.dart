@@ -126,12 +126,16 @@ DateTime? _lastrequest;
           try{
       await FirebaseAuth.instance.sendPasswordResetEmail(email: emailRest); // send rest password
       await upddatLastrequst(); // to update last date 
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Password reset link sent!" , style: TextStyle(color: Colors.white),) , backgroundColor: Colors.green,));
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Password reset link sent!" , style: TextStyle(color: Colors.white),) , backgroundColor: Colors.green,));
+      }
+      
           }
           on FirebaseAuthException {
-            // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Something went wrong. Please try again in a bit.", style: TextStyle(color: Colors.white)) , backgroundColor: Colors.red,));
+            if(mounted){
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Something went wrong. Please try again in a bit.", style: TextStyle(color: Colors.white)) , backgroundColor: Colors.red,));
+            }
+            
           }
   }
 
@@ -142,13 +146,16 @@ DateTime? _lastrequest;
         conter = rmingTime;
       });
     _timer = Timer.periodic(const Duration(seconds: 1), (timer){
-      setState(() {
+      if(mounted){
+        setState(() {
         if(conter <= 0){
           _timer!.cancel();
         } else {
           conter--;
         }
       });
+      }
+      
     });
   }
 
@@ -216,14 +223,14 @@ DateTime? _lastrequest;
                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("The email should end with @gmail.com" , style: TextStyle(color: Colors.white),) , backgroundColor: redC,));
                         }
                       }
-                      // if email was emptu 
+                      // if email was empty
                       else {
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please write your email" , style: TextStyle(color: Colors.white),) , backgroundColor: redC,));
                       }
                     },
                     child: const Text("Forgot Password? " , style: TextStyle(fontWeight: FontWeight.bold , color: redC),)) : 
-                    // ignore: unnecessary_string_interpolations
-                    Text("${getFormattedTime()}" , style: const TextStyle(fontSize: 18),) 
+                    
+                    Text(getFormattedTime() , style: const TextStyle(fontSize: 18),) 
                 ],),
                 const SizedBox(height: 5,),
               
@@ -245,8 +252,10 @@ DateTime? _lastrequest;
                         User? user = FirebaseAuth.instance.currentUser;
                         if(user != null && user.emailVerified){
                           setState(() {loadingLogin = false;});
-                          // ignore: use_build_context_synchronously
-                          Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route)=> false);
+                          if(context.mounted){
+                            Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route)=> false);
+                          }
+                          
                         }
                         // if user == null
                         else {
@@ -259,16 +268,13 @@ DateTime? _lastrequest;
                         setState(() {loadingLogin = false;});
                          // if email or password is worng
               if(e.code == 'invalid-credential'){
-                // ignore: use_build_context_synchronously
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text( "Wrong email or password. Try again.", style: TextStyle(color: Colors.white),) , backgroundColor: Colors.red,));
+                if(context.mounted){ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text( "Wrong email or password. Try again.", style: TextStyle(color: Colors.white),) , backgroundColor: Colors.red,));}
                 // too many requsets
               } else if(e.code == 'too-many-requests'){
-                // ignore: use_build_context_synchronously
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Too many attempts. Please try again later" , style: TextStyle(color: Colors.white),) , backgroundColor: Colors.red,));
+                if(context.mounted){ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Too many attempts. Please try again later" , style: TextStyle(color: Colors.white),) , backgroundColor: Colors.red,));}
                 // any error else 
               } else {
-                // ignore: use_build_context_synchronously
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text( "Something went wrong. Please try again in a bit.", style: TextStyle(color: Colors.white),) , backgroundColor: Colors.red,));
+                if(context.mounted){ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text( "Something went wrong. Please try again in a bit.", style: TextStyle(color: Colors.white),) , backgroundColor: Colors.red,));}
               }
 
                       }
@@ -297,14 +303,13 @@ DateTime? _lastrequest;
                   UserCredential? user = await AuthService().signInWithGoogle();
                   if(user != null){
                     setState(() {loadingGoogle = false;});
-                    // ignore: use_build_context_synchronously
-                    Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route)=> false);
+                    if(context.mounted){Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route)=> false);}
                   }
                   else{
                     setState(() {loadingGoogle = false;});
-                    // ignore: use_build_context_synchronously
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: 
-                    Text("Unable to Login with Google, Please try later.")));
+                    if(context.mounted){ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: 
+                    Text("Unable to Login with Google, Please try later.")));}
+                    
                   }
                 },),
               

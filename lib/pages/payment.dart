@@ -98,8 +98,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                     );
                   } else if (state is ProfileError) {
-                    // ignore: unnecessary_string_interpolations
-                    return const Text("${"Faild to get the Address"}");
+                    return const Text("Faild to get the Address");
                   }
                   // if the date comes successfully
                   else if (state is DateProfileLoaded) {

@@ -41,15 +41,17 @@ class _EditProfileState extends State<EditProfile> {
         selectImage = File(pickphoto.path);
       }
       else{
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
+        if(mounted){
+          ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("You cancelled the photo selection" , selectionColor: redC,))
         );
+        }
       }
     setState(() {});
     // to close the Sheet bottom after choose photo 
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pop();
+    if(mounted){
+      Navigator.of(context).pop();
+    }
     }
     // Void to take photo from Camara
     Future<void> selectImagefromCamara() async{
@@ -66,8 +68,9 @@ class _EditProfileState extends State<EditProfile> {
       }
     });
     //to close the Sheet bottom after choose photo
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pop();
+    if(mounted){
+      Navigator.of(context).pop();
+    }
     }
   // to show dialog it's done
     void showdialogForDone (BuildContext context , String message ){

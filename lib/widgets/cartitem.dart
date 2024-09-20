@@ -87,8 +87,7 @@ class _CartitemState extends State<Cartitem> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text("${widget.cartdate[index]["name"]}" , style: const TextStyle( fontSize: 16 , color: Colors.black , fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis,),
-                                              // ignore: unnecessary_brace_in_string_interps
-                                              Text("\$${totalPrice}" , style: const TextStyle(fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold),),
+                                              Text("\$$totalPrice" , style: const TextStyle(fontSize: 18 , color: Colors.black , fontWeight: FontWeight.bold),),
                                             ],
                                           ),
                                         ),

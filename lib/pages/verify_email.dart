@@ -86,12 +86,14 @@ if(requstConut == 0){
           try{
       await FirebaseAuth.instance.currentUser!.sendEmailVerification(); // send verify 
       await upddatLastrequst(); // to update last date 
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("verification email has been sent") , backgroundColor: Colors.green,));
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("verification email has been sent") , backgroundColor: Colors.green,));
+      }
           }
           catch(e){
-            // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Something went wrong. Please try again in a bit") , backgroundColor: Colors.red,));
+            if(mounted){
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Something went wrong. Please try again in a bit") , backgroundColor: Colors.red,));
+            }
           }
   }
   
@@ -155,12 +157,16 @@ if(requstConut == 0){
                   user = FirebaseAuth.instance.currentUser;
                   if( user != null && user.emailVerified){
                     // take the user to Home Page 
-                    // ignore: use_build_context_synchronously
-                    successVerifyGoLogin(context);
+                    if(context.mounted){
+                      successVerifyGoLogin(context);
+                    }
+                    
                   } else {
                     // if user has not verifay has email 
-                    // ignore: use_build_context_synchronously
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please verify your email to complete registration." , style: TextStyle(color: Colors.white),) , backgroundColor: Colors.red,));
+                    if(mounted){
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please verify your email to complete registration." , style: TextStyle(color: Colors.white),) , backgroundColor: Colors.red,));
+                    }
+                    
                   }
                 })),
                 // send verify again 
