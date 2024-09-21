@@ -18,6 +18,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
   int ? _requstConut; // how many times user asked verify
   int  conter = 0; // sec
   Timer? _timer;
+  bool loadingsendVerify = false; // For loading while send the verify link
 
 @override
   void initState(){
@@ -84,13 +85,18 @@ if(requstConut == 0){
   Future<void> _sendverifyEmail() async {
           // send verify 
           try{
-      await FirebaseAuth.instance.currentUser!.sendEmailVerification(); // send verify 
+            // Start loading
+            setState(() {loadingsendVerify = true ;});
+      await FirebaseAuth.instance.currentUser!.sendEmailVerification(); // send verify
+      // Stop loading
+      setState(() {loadingsendVerify = false ;});  
       await upddatLastrequst(); // to update last date 
       if(mounted){
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("verification email has been sent") , backgroundColor: Colors.green,));
       }
           }
           catch(e){
+            setState(() {loadingsendVerify = false ;}); 
             if(mounted){
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Something went wrong. Please try again in a bit") , backgroundColor: Colors.red,));
             }
@@ -163,13 +169,15 @@ if(requstConut == 0){
                     
                   } else {
                     // if user has not verifay has email 
-                    if(mounted){
+                    if(context.mounted){
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please verify your email to complete registration." , style: TextStyle(color: Colors.white),) , backgroundColor: Colors.red,));
                     }
                     
                   }
                 })),
                 // send verify again 
+                loadingsendVerify ?
+                const Center(child: CircularProgressIndicator(color: redC)) :
                 conter == 0 ?
                 GestureDetector(
                   onTap: () async {

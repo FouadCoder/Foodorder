@@ -48,6 +48,7 @@ Future signInWithGoogle() async {
 
   bool loadingGoogle = false;
   bool loadingLogin = false;
+  bool loadingForgetPassword = false;
   @override
   void dispose(){
     emailcontroller.dispose();
@@ -77,6 +78,7 @@ DateTime? _lastrequest;
 
 // get the date of how many user asked verify 
   Future<void> getLastrequest() async {
+    // Loading while check the date 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     DateTime lastrequestdate = DateTime.parse(sharedPreferences.getString("_lastrequestPassword") ?? DateTime.now().toString()); // get the last request time
     int requstConutdate = sharedPreferences.getInt("_requstConutPassword") ?? 0 ;
@@ -124,7 +126,11 @@ DateTime? _lastrequest;
   Future<void> _sendrestPassword(String emailRest) async {
           // send verify 
           try{
+            // Loading true while send the rest password
+            setState(() {loadingForgetPassword = true;});
       await FirebaseAuth.instance.sendPasswordResetEmail(email: emailRest); // send rest password
+      // Stop the loading
+      setState(() {loadingForgetPassword = false;});
       await upddatLastrequst(); // to update last date 
       if(mounted){
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Password reset link sent!" , style: TextStyle(color: Colors.white),) , backgroundColor: Colors.green,));
@@ -132,6 +138,7 @@ DateTime? _lastrequest;
       
           }
           on FirebaseAuthException {
+            setState(() {loadingForgetPassword = false;});
             if(mounted){
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Something went wrong. Please try again in a bit.", style: TextStyle(color: Colors.white)) , backgroundColor: Colors.red,));
             }
@@ -211,6 +218,9 @@ DateTime? _lastrequest;
                 Row(
                   children: [
                   const Spacer(),
+                  // check the loading and conter 
+                  loadingForgetPassword?
+                  const CircularProgressIndicator(color: redC) : 
                   conter == 0 ?
                   GestureDetector(
                     onTap: (){
@@ -229,7 +239,7 @@ DateTime? _lastrequest;
                       }
                     },
                     child: const Text("Forgot Password? " , style: TextStyle(fontWeight: FontWeight.bold , color: redC),)) : 
-                    
+                    // if conter != 0
                     Text(getFormattedTime() , style: const TextStyle(fontSize: 18),) 
                 ],),
                 const SizedBox(height: 5,),
